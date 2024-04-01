@@ -6,6 +6,7 @@ import { Input } from "@mui/base/Input";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from "react-router-dom";
+import axios from 'axios'
 
 const SignIn = () => {
 
@@ -18,9 +19,15 @@ const SignIn = () => {
       username: Yup.string().required('Username is required'),
       password: Yup.string().required('Password is required'),
     }),
-    onSubmit: values => {
-      // Bu yerdan form ma'lumotlarini yuborish va local storage ga saqlash kerak
-      console.log('Submitted:', values);
+    onSubmit:async values => {
+      try {
+        const response = await axios.post('https://3a00661dd012012f.mokky.dev/auth', values);
+        console.log(response.data);
+
+      } catch (error) {
+        console.error(error);
+      }
+
     },
   });
 

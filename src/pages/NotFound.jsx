@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import notFound from "../assets/notFound.svg";
+import { Link } from "react-router-dom";
 const NotFound = () => {
   return (
     <div className="mt-6">
@@ -9,14 +10,16 @@ const NotFound = () => {
         alt=""
       />
       <div className="flex justify-center items-center gap-5 mt-5">
-        <Button
-          sx={{ paddingX: { xs: 2, sm: 8 } }}
-          className="text-lowercase mt-16"
-          variant="contained"
-          type="submit"
-        >
-          Go Home Page
-        </Button>
+        <Link to="/signin">
+          <Button
+            sx={{ paddingX: { xs: 2, sm: 8 } }}
+            className="text-lowercase mt-16"
+            variant="contained"
+            type="submit"
+          >
+            Go Home Page
+          </Button>
+        </Link>
         <Button
           sx={{ paddingX: { xs: 2, sm: 8 } }}
           className="text-lowercase mt-16  border border-blue-700"

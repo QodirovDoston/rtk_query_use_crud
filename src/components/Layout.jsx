@@ -6,7 +6,7 @@ const Layout = () => {
     <>
       <div className="routet">
         <PrimarySearchAppBar/>
-      <div className="mx-auto w-[40%] " >
+      <div className="mx-auto" >
         <Outlet />
       </div>
       </div>

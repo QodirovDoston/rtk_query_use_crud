@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.routet {
+  background-image: url("../src//assets//Rectangle\ 2.svg");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  height: 716px;
+  /* width: 100%; */
+}

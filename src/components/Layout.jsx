@@ -1,16 +1,17 @@
-'use cil q ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,qw                                                            qqqqqqqqqqqqqqqqqqqqqqqqqqqq'
-import { Outlet } from 'react-router-dom';
-import Home from '../pages/Home';
+import { Outlet } from "react-router-dom";
+import PrimarySearchAppBar from "../pages/AppBar";
 
 const Layout = () => {
-    return (
-        <>
-            <Home />
-            <div>
-                <Outlet />
-            </div>
-        </>
-    )
-}
+  return (
+    <>
+      <div className="routet">
+        <PrimarySearchAppBar/>
+      <div className="mx-auto w-[40%] " >
+        <Outlet />
+      </div>
+      </div>
+    </>
+  );
+};
 
-export default Layout
+export default Layout;

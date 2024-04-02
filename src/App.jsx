@@ -15,7 +15,7 @@ function App() {
       <ToastContainer/>
       <Router>
         <Switch>
-        <Route exact path="/signup" render={<SignUpPage setToken={setToken}/>} />
+        <Route exact path="/signup" render={() =><SignUpPage setToken={setToken}/>} />
           {token ? (
             <Route exact path="/" component={Layout} />
           ) : (

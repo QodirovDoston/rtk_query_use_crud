@@ -1,46 +1,48 @@
+/* eslint-disable react/prop-types */
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Input } from "@mui/base/Input";
-
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 const SignUp = ({setToken}) => {
   const formik = useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
-      confirmpassword: ""
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Username is required"),
+      email: Yup.string().required("email is required"),
       password: Yup.string().required("Password is required"),
-      confirmpassword: Yup.string()
-        .required("Confirm Password is required")
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
     }),
     onSubmit: async(values) => {
+      // console.log(values);
       try {
         const response = await axios.post('https://reqres.in/api/register', {
-          username: values.username,
+        email: values.email,
           password: values.password,
-          confirmpassword:values.confirmpassword
         });
         const { token } = response.data;
+        console.log(token);
         setToken(token);
         window.localStorage.setItem('token', token);
         toast.success("Wow Successfully logged in!")
       } catch (error) {
         console.error('Error signing in');
-        toast.error("some thing wrong bro!  Try again!" , error)
+        toast.error("some thing wrong bro!  Try again!" , error.response)
+         if (error.response && error.response.data) {
+        toast.error(error.response.data.error); // xato xabarlarni foydalanuvchiga ko'rsating
+      } else {
+        toast.error("something went wrong, please try again later"); // Agar ma'lumotlarda xatolik bo'lmasa, umumiy xabar
       }
     }
+  
+    }
   });
-  // https://reqres.in/api/register
 
   return (
     <div className="routet">
@@ -56,25 +58,25 @@ const SignUp = ({setToken}) => {
             Sing Up
           </Typography>
           <form onSubmit={formik.handleSubmit}>
-            <label className="text-sm" htmlFor="username">
-              Username
+            <label className="text-sm" htmlFor="email">
+            email
             </label>
             <Input
-              id="username"
-              name="username"
-              type="text"
+              id="email"
+              name="email"
+              type="email"
               slotProps={{
                 input: {
                   className:
                     "w-full my-1 text-md font-sans font-normal leading-5 px-3 py-3 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-outline-purple dark:focus:shadow-outline-purple focus:shadow-lg border border-solid border-slate-300 hover:border-purple-500 dark:hover:border-purple-500 focus:border-purple-500 dark:focus:border-purple-500 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-300 focus-visible:outline-0"
                 }
               }}
-              {...formik.getFieldProps("username")}
-              aria-label="Username"
-              placeholder="Username"
+              {...formik.getFieldProps("email")}
+              aria-label="email"
+              placeholder="Email"
             />
-            {formik.touched.username && formik.errors.username ? (
-              <div className="text-red-500">{formik.errors.username}</div>
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-red-500">{formik.errors.email}</div>
             ) : null}
 
             <label className="text-sm" htmlFor="password">
@@ -91,24 +93,7 @@ const SignUp = ({setToken}) => {
                 }
               }}
               {...formik.getFieldProps("password")}
-              aria-label="Password"
-              placeholder="Password"
-            />
-            <label className="text-sm" htmlFor="">
-              Confirm password
-            </label>
-            <Input
-              id="confirmpassword"
-              name="confirmpassword"
-              type="password"
-              slotProps={{
-                input: {
-                  className:
-                    "w-full my-1 mb-4 text-md font-sans font-normal leading-5 px-3 py-3 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-outline-purple dark:focus:shadow-outline-purple focus:shadow-lg border border-solid border-slate-300 hover:border-purple-500 dark:hover:border-purple-500 focus:border-purple-500 dark:focus:border-purple-500 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-300 focus-visible:outline-0"
-                }
-              }}
-              {...formik.getFieldProps("confirmpassword")}
-              aria-label="Password"
+              aria-label="password"
               placeholder="Password"
             />
             {formik.touched.password && formik.errors.password ? (
@@ -127,13 +112,13 @@ const SignUp = ({setToken}) => {
         <p
           id="parent-modal-description"
           className="modal-description text-center pb-7"
-        >
+        > 
           Already signed up?{" "}
           <span className="text-blue-700 text-sm">
-            <Link to="/signin" relative="path">
+            <a href="/">
               {" "}
               Go to sign in.
-            </Link>
+            </a>
           </span>
         </p>
       </Card>

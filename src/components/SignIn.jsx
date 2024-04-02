@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import { Input } from "@mui/base/Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -108,12 +107,12 @@ const SignIn = ({ setToken }) => {
             id="parent-modal-description"
             className="modal-description text-center pb-7"
           >
-            Already signed in?{" "}
+            Create new account {" "}
             <span className="text-blue-700 text-sm">
               {" "}
-              <Link to="/signup" relative="path">
+              <a href="/signup">
                 Go to sign up.
-              </Link>
+              </a>
             </span>
           </p>
           

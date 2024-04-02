@@ -1,14 +1,12 @@
-import { Outlet } from "react-router-dom";
 import PrimarySearchAppBar from "../pages/AppBar";
+import Home from "../pages/Home";
 
 const Layout = () => {
   return (
     <>
       <div className="routet">
-        <PrimarySearchAppBar/>
-      <div className="mx-auto" >
-        <Outlet />
-      </div>
+        <PrimarySearchAppBar />
+        <Home />
       </div>
     </>
   );

@@ -1,24 +1,34 @@
-import { Routes, Route} from "react-router-dom";
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
-import UserProfile from "./components/UserProfile";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Suspense, useState } from "react";
+import LoginPage from "../src/components/SignIn.jsx";
+import NotFound from "./pages/NotFound.jsx";
 import Layout from "./components/Layout";
+import SignUpPage from './components/SignUp.jsx'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  const [token, setToken] = useState(window.localStorage.getItem("token"));
+  console.log(token);
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="signin" element={<SignIn />} />
-        <Route path="signup" element={<SignUp />} />
-        <Route path="userprofile" element={<UserProfile />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+    <Suspense fallback={<NotFound />}>
+      <ToastContainer/>
+      <Router>
+        <Switch>
+        <Route exact path="/signup" render={<SignUpPage setToken={setToken}/>} />
+          {token ? (
+            <Route exact path="/" component={Layout} />
+          ) : (
+            <Route
+              exact
+              path="/"
+              render={() => <LoginPage setToken={setToken} />}
+            />
+          )}
+          <Route component={NotFound} />
+        </Switch>
+      </Router>
+    </Suspense>
   );
 }
 

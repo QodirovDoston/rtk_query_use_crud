@@ -7,29 +7,45 @@ import { Input } from "@mui/base/Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
-const SignUp = () => {
+import axios from "axios";
+import { toast } from "react-toastify";
+const SignUp = ({setToken}) => {
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
-      confirmPassword: ""
+      confirmpassword: ""
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Username is required"),
       password: Yup.string().required("Password is required"),
-      confirmPassword: Yup.string()
+      confirmpassword: Yup.string()
         .required("Confirm Password is required")
         .oneOf([Yup.ref("password"), null], "Passwords must match")
     }),
-    onSubmit: (values) => {
-      // Bu yerdan form ma'lumotlarini yuborish va local storage ga saqlash kerak
-      console.log("Submitted:", values);
+    onSubmit: async(values) => {
+      try {
+        const response = await axios.post('https://reqres.in/api/register', {
+          username: values.username,
+          password: values.password,
+          confirmpassword:values.confirmpassword
+        });
+        const { token } = response.data;
+        setToken(token);
+        window.localStorage.setItem('token', token);
+        toast.success("Wow Successfully logged in!")
+      } catch (error) {
+        console.error('Error signing in');
+        toast.error("some thing wrong bro!  Try again!" , error)
+      }
     }
   });
+  // https://reqres.in/api/register
 
   return (
-    <div className="mt-24 flex justify-center items-center">
-      <Card className="px-2" sx={{ minWidth:450, maxWidth: 500 }}>
+    <div className="routet">
+    <div className="pt-24 flex justify-center items-center">
+      <Card className="px-2" sx={{ minWidth: 450, maxWidth: 500 }}>
         <CardContent className={""}>
           <Typography
             className="text-center"
@@ -82,16 +98,16 @@ const SignUp = () => {
               Confirm password
             </label>
             <Input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="confirmPassword"
+              id="confirmpassword"
+              name="confirmpassword"
+              type="password"
               slotProps={{
                 input: {
                   className:
                     "w-full my-1 mb-4 text-md font-sans font-normal leading-5 px-3 py-3 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-outline-purple dark:focus:shadow-outline-purple focus:shadow-lg border border-solid border-slate-300 hover:border-purple-500 dark:hover:border-purple-500 focus:border-purple-500 dark:focus:border-purple-500 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-300 focus-visible:outline-0"
                 }
               }}
-              {...formik.getFieldProps("confirmPassword")}
+              {...formik.getFieldProps("confirmpassword")}
               aria-label="Password"
               placeholder="Password"
             />
@@ -113,11 +129,15 @@ const SignUp = () => {
           className="modal-description text-center pb-7"
         >
           Already signed up?{" "}
-          <span className="text-blue-700 text-sm"> 
-          <Link to="/signin" relative="path"> Go to sign in.</Link>
-           </span>
+          <span className="text-blue-700 text-sm">
+            <Link to="/signin" relative="path">
+              {" "}
+              Go to sign in.
+            </Link>
+          </span>
         </p>
       </Card>
+    </div>
     </div>
   );
 };
